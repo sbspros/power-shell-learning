@@ -1,0 +1,20 @@
+## This gets GPO information on domain.supoff.com
+## Author Richard.Chamberlain
+## Nov 2022
+$supDomain="domain"
+$reportPath="I:\2020\Powershell\GPO\reports"
+
+$AllGpoReport=0
+$GpoReport=1
+$PolicyName="Policy"
+
+Get-GPO -All -Domain $supDomain |Select-Object -Property DisplayName,CreationTime,GPOStatus,Owner
+
+if ($AllGpoReport){
+    Get-GPOReport -All -ReportType Html -Domain $supDomain -Path $reportPath\All-GPOs.html
+}
+
+if ($GpoReport){
+    Get-GPO -Name $PolicyName | Get-GPOReport -ReportType HTML -Path $reportPath\report.html 
+    Invoke-Item $Home\report.html
+}
